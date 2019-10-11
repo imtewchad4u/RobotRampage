@@ -18,6 +18,7 @@ public class Robot : MonoBehaviour
     private float timeLastFired;
 
     private bool isDead;
+    public Animator robot;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +46,8 @@ public class Robot : MonoBehaviour
     }
     private void fire()
     {
-        Debug.Log("Fire");
+        robot.Play("Fire");
     }
+
+
 }
