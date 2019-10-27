@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class Game : MonoBehaviour
     public int score;
     public int waveCountdown;
     public bool isGameOver;
+    public GameObject gameOverPanel;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +30,15 @@ public class Game : MonoBehaviour
         SpawnRobots();
     }
 
+    public void OnGUI()
+    {
+        if (isGameOver && Cursor.visible == false)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
+
     private void SpawnRobots()
     {
         foreach (RobotSpawn spawn in spawns)
@@ -35,6 +47,32 @@ public class Game : MonoBehaviour
             gameUI.SetEnemyText(enemiesLeft);
         }
     }
+
+    public void GameOver()
+    {
+        isGameOver = true;
+        Time.timeScale = 0;
+        player.GetComponent<FirstPersonController>().enabled = false;
+        player.GetComponent<CharacterController>().enabled = false;
+        gameOverPanel.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(Constants.SceneBattle);
+        gameOverPanel.SetActive(true);
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(Constants.SceneMenu);
+    }
+
 
     private IEnumerator updateWaveTimer()
     {
